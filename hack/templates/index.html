@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}
+    Home
+{% endblock %}
+{% block content %}
+<div class="container d-flex justify-content-center mt-50 mb-50">
+            
+    <div class="row">
+        {% for prod in products %}
+            
+        
+       <div class="col-md-4 mt-2">
+        
+            
+            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-img-actions">
+                                        
+                                            <img src="{{prod.image}}" class="card-img img-fluid" width="96" height="350" alt="">
+                                          
+                                       
+                                    </div>
+                                </div>
+
+                                <div class="card-body bg-light text-center">
+                                    <div class="mb-2">
+                                        <h6 class="font-weight-semibold mb-2">
+                                            <a  class="text-default mb-2" data-abc="true">{{prod.name}}</a>
+                                        </h6>
+
+                                        <a class="text-muted" data-abc="true">{{prod.category}}</a>
+                                    </div>
+
+                                    <h3 class="mb-0 font-weight-semibold mb-2">${{prod.price}}</h3>
+                                    <a href="/addtocart/{{prod.id}}">
+                                    <button type="button" class="btn btn-primary"> Add to cart</button></a>
+                                    <a href="/buy/{{prod.id}}">
+                                    <button type="button" class="btn btn-primary">Buy now</button>
+                                        </a>
+                                    
+                                </div>
+                            </div>
+
+
+                        
+                         
+       </div> 
+
+
+
+
+
+
+       {% endfor %}
+    </div>
+</div>
+{% endblock %}
