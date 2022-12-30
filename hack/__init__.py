@@ -17,7 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 UPLOAD_FOLDER = 'hack/static/users/'
 PRODUCT_UPLOAD_FOLDER = 'hack/static/products'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['PRODUCT_UPLOAD_FOLDER'} = PRODUCT_UPLOAD_FOLDER
+app.config['PRODUCT_UPLOAD_FOLDER'] = PRODUCT_UPLOAD_FOLDER
 db = SQLAlchemy(app)
 Migrate(app,db)
 
