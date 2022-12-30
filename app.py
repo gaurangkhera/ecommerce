@@ -246,7 +246,7 @@ def edit_product(id):
             if form.image is not None:
                 file = form.image.data
                 filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                file.save(os.path.join(app.config['PRODUCT_UPLOAD_FOLDER'], filename))
                 product.image = filename
             db.session.add(product)
             db.session.commit()
