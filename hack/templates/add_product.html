@@ -1,20 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}
-    {{user.username}}
+    Add a product
 {% endblock %}
 {% block content %}
-<div class="container-xl px-4 mt-4">
+<div class="container-xl px-4 mt-4"> 
     <div class="row">
         <div class="col-xl-4">
             <!-- Profile picture card-->
-            <form method="post" action="/edit_user/{{user.id}}" enctype="multipart/form-data">
+            <form method="post" action="/add_product" enctype="multipart/form-data">
                 {{form.hidden_tag()}}
                         {{form.csrf_token}}
             <div class="card mb-4 mb-xl-0">
-                <div class="card-header">Profile Picture</div>
+                <div class="card-header">Add the product's picture</div>
                 <div class="card-body text-center">
                     <!-- Profile picture image-->
-                    <img class="img-account-profile rounded-circle mb-2" width="200" height="200" src="/static/{{user.image}}" alt="">
                     <!-- Profile picture help block-->
                     <!-- Profile picture upload button-->
                     {{form.image(class='form-control mt-2')}}
@@ -24,7 +23,7 @@
         <div class="col-xl-8">
             <!-- Account details card-->
             <div class="card mb-4">
-                <div class="card-header">Account Details</div>
+                <div class="card-header">Add product information</div>
                 <div class="card-body">
                         
                         <!-- Form Group (username)-->
@@ -32,8 +31,8 @@
                         <div class="row gx-3 mb-3">
                             <!-- Form Group (first name)-->
                             <div class="col-md-6">
-                                <label class="small mb-1" for="inputFirstName">Change your username (currently {{user.username}})</label>
-                                {{form.username(class='form-control')}}
+                                <label class="small mb-1" for="inputFirstName">Enter product name</label>
+                                {{form.name(class='form-control')}}
                             </div>
                         </div>
                         <!-- Form Row        -->
@@ -51,15 +50,15 @@
                         </div> -->
                         <!-- Form Group (email address)-->
                         <div class="mb-3">
-                            <label class="small mb-1" for="inputEmailAddress">Change your email address (currently {{user.email}})</label>
-                            {{form.email(class='form-control')}}
+                            <label class="small mb-1" for="inputEmailAddress">Enter product price</label>
+                            {{form.price(class='form-control')}}
                         </div>
                         <!-- Form Row-->
                         <!-- <div class="row gx-3 mb-3">
                             Form Group (phone number)-->
                              <div class="col-md-6">
-                                <label class="small mb-1" for="inputPhone">Change your password</label>
-                                {{form.password(class='form-control')}}
+                                <label class="small mb-1" for="inputPhone">Enter category</label>
+                                {{form.category(class='form-control')}}
                             </div>
                 <!-- Form Group (birthday
                             <div class="col-md-6">

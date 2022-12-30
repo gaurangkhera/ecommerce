@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
 
-# create_db(app)
+create_db(app)
 
 
 @app.route('/')
@@ -222,38 +222,67 @@ def edit_user(id):
             if form.image.data is not None:
                 file = form.image.data
                 file_name = secure_filename(file.filename)
+                print(file_name)
                 pic_name = str(uuid.uuid1()) + '_' + file_name
                 user.image = pic_name
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('admin'))
-    return render_template('admin_profile.html', form=form, user=user)
+        return render_template('admin_profile.html', form=form, user=user)
+    return abort(403)
 
 @app.route('/edit_product/<id>', methods=['GET', 'POST'])
 @login_required
 def edit_product(id):
+        if current_user.username == 'XINO':
+            form = EditProductForm()
+            product = Product.query.filter_by(id=id).first()
+            if form.validate_on_submit():
+                if form.name.data:
+                    product.name = form.name.data
+                if form.price.data:
+                    product.price = form.price.data
+                if form.category.data:
+                    product.category = form.category.data
+                if form.image.data:
+                    image = form.image.data
+                    image_name = secure_filename(image.filename)
+                    pic_name = str(uuid.uuid1()) + '_' + image_name
+                    product.image = pic_name
+                    image.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+                db.session.add(product)
+                db.session.commit()
+            return render_template('edit_product.html', form=form, product=product)
+        return abort(403)
+
+@app.route('/add_product', methods=['GET', 'POST'])
+@login_required
+def add_product():
+    if current_user.username == 'XINO':
+        form = EditProductForm()
+        if form.validate_on_submit:
+            if form.image.data:
+                image = form.image.data
+                image_name = secure_filename(image.filename)
+                pic_name = str(uuid.uuid1()) + '_' + image_name
+                new_product = Product(image=pic_name, name=form.name.data, price=form.price.data, category=form.category.data)
+                image.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+                db.session.add(new_product)
+                db.session.commit()
+        return render_template('add_product.html', form=form)
+    return abort(403)
+
+@app.route('/delete_product/<id>')
+@login_required
+def delete_product(id):
     if current_user.username == 'XINO':
         product = Product.query.filter_by(id=id).first()
-        form = EditProductForm()
-        if form.validate_on_submit():
-            if form.name.data != '':
-                product.name = form.name.data
-            if form.price.data != '':
-                product.price = form.price.data
-            if form.category.data != '':
-                product.category = form.category.data
-            if form.image is not None:
-                file = form.image.data
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['PRODUCT_UPLOAD_FOLDER'], filename))
-                product.image = filename
-            db.session.add(product)
-            db.session.commit()
-            return redirect(url_for('admin'))
-        return render_template('edit_product.html', form=form, product=product)
+        db.session.delete(product)
+        db.session.commit()
+        return redirect(url_for('admin'))
     return abort(403)
-    
+            
 
 if __name__ == '__main__':
     app.run(debug=True)

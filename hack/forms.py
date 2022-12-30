@@ -37,9 +37,9 @@ class ReviewForm(FlaskForm):
     submit = SubmitField('submit')
 
 class EditProductForm(FlaskForm):
-    name = StringField('new name')
-    price = IntegerField('new price')
-    category = StringField('category')
-    image = FileField('image', validators=[FileAllowed('png', 'jpg'), DataRequired()])
+    image = FileField('upload image')
+    name = StringField('username')
+    category = StringField('email')
+    price = IntegerField('password')
     submit = SubmitField('Save changes')
 

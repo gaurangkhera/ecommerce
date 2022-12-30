@@ -6,6 +6,11 @@
 <div class="container d-flex justify-content-center mt-50 mb-50">
             
     <div class="row">
+        {% if products|length == 0 %}
+            <center><h1>No products found.</h1></center>
+        {% else %}
+            
+        
         {% for prod in products %}
             
         
@@ -16,7 +21,7 @@
                                 <div class="card-body">
                                     <div class="card-img-actions">
                                         
-                                            <img src="/static/products/{{prod.image}}" class="card-img img-fluid" width="96" height="350" alt="">
+                                            <img src="/static/{{prod.image}}" class="card-img img-fluid" width="96" height="350" alt="">
                                           
                                        
                                     </div>
@@ -58,4 +63,5 @@
        {% endfor %}
     </div>
 </div>
+{% endif %}
 {% endblock %}

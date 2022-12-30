@@ -33,7 +33,7 @@
             <a class="nav-link px-2 text-secondary me-2">Your balance: ${{current_user.credits}}</a>
             <a href="/logout">
               <button type="button" class="btn btn-outline-light me-2">Logout</button></a>
-              <a href="/profile"><img height="50" width='50' class='rounded-circle' src='/static/users/{{current_user.image}}'></a>
+              <a href="/profile"><img height="50" width='50' class='rounded-circle' src='/static/{{current_user.image}}'></a>
             {% else %}
             <a href="/login">
               <button type="button" class="btn btn-outline-light me-2">Login</button></a>

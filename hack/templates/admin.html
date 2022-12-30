@@ -11,8 +11,8 @@
     <hr>
     <h1>Products - </h1>
     {% for product in products %}
-        <h3>{{product.name}} | ${{product.price}} <a href="/review/{{product.id}}">Reviews</a> <a href="/edit_product/{{product.id}}">Edit product</a></h3>
+        <h3>picture: {{product.image}} {{product.name}} | ${{product.price}} <a href="/review/{{product.id}}">Reviews</a> <a href="/edit_product/{{product.id}}">Edit product</a> <a href="/delete_product/{{product.id}}">Delete product</a></h3>
     {% endfor %}
-    <a href="/add_prod" class="btn btn-primary mt-2">Add product</a>
+    <a href="/add_product" class="btn btn-primary mt-2">Add product</a>
 </center>
 {% endblock %}
