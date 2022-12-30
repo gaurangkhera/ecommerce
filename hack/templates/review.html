@@ -12,5 +12,9 @@
         {{form.review(class='form-control')}}
         {{form.submit(class='btn btn-primary')}}
     </form>
+    <h1>Other reviews</h1>
+    {% for review in product.reviews %}
+        <h3>{{review.text}}</h3>
+    {% endfor %}
 </center>
 {% endblock %}
