@@ -36,3 +36,10 @@ class ReviewForm(FlaskForm):
     review = StringField('review', validators=[DataRequired()])
     submit = SubmitField('submit')
 
+class EditProductForm(FlaskForm):
+    name = StringField('new name')
+    price = IntegerField('new price')
+    category = StringField('category')
+    image = FileField('image', validators=[FileAllowed('png', 'jpg'), DataRequired()])
+    submit = SubmitField('Save changes')
+

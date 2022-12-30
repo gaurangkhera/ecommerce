@@ -1,7 +1,7 @@
 from hack import app, create_db, db, UPLOAD_FOLDER
 from flask import render_template, redirect, abort, url_for, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
-from hack.forms import LoginForm, RegForm, CreditForm, ProfileForm, ReviewForm
+from hack.forms import LoginForm, RegForm, CreditForm, ProfileForm, ReviewForm, EditProductForm
 from hack.models import User, Product, Review
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -173,6 +173,87 @@ def review_product(id):
 @login_required
 def thank_you():
     return render_template('thankyou.html')
-        
+
+@app.route('/admin')
+@login_required
+def admin():
+    if current_user.username == 'XINO':
+        products = Product.query.all()
+        users = User.query.all()
+        reviews = Review.query.all()
+        return render_template('admin.html', users=users, products=products, reviews=reviews)
+    abort(403)
+
+@app.route('/delete_review/<productid>/<reviewid>')
+@login_required
+def delete_review(productid, reviewid):
+    product = Product.query.filter_by(id=int(productid)).first()
+    review =  Review.query.filter_by(id=int(reviewid)).first()
+    if current_user.username == 'XINO' or current_user.username == review.reviewer:
+        if product and review:
+            db.session.delete(review)
+            db.session.commit()
+            return redirect(url_for('home'))
+    return abort(403)
+
+@app.route('/delete_user/<id>')
+@login_required
+def delete_user(id):
+    if current_user.username == 'XINO':
+        user = User.query.filter_by(id=id).first()
+        db.session.delete(user)
+        db.session.commit() 
+        return redirect(url_for('admin'))
+    return abort(403)
+
+@app.route('/edit_user/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_user(id):
+    if current_user.username == 'XINO':
+        form = ProfileForm()
+        user = User.query.filter_by(id=id).first()
+        if form.validate_on_submit():
+            if form.username.data != "":
+                user.username = form.username.data
+            if form.email.data != "":
+                user.email = form.email.data
+            if form.password.data != "":
+                user.password = generate_password_hash(form.password.data)
+            if form.image.data is not None:
+                file = form.image.data
+                file_name = secure_filename(file.filename)
+                pic_name = str(uuid.uuid1()) + '_' + file_name
+                user.image = pic_name
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('admin'))
+    return render_template('admin_profile.html', form=form, user=user)
+
+@app.route('/edit_product/<id>', methods=['GET', 'POST'])
+@login_required
+def edit_product(id):
+    if current_user.username == 'XINO':
+        product = Product.query.filter_by(id=id).first()
+        form = EditProductForm()
+        if form.validate_on_submit():
+            if form.name.data != '':
+                product.name = form.name.data
+            if form.price.data != '':
+                product.price = form.price.data
+            if form.category.data != '':
+                product.category = form.category.data
+            if form.image is not None:
+                file = form.image.data
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                product.image = filename
+            db.session.add(product)
+            db.session.commit()
+            return redirect(url_for('admin'))
+        return render_template('edit_product.html', form=form, product=product)
+    return abort(403)
+    
+
 if __name__ == '__main__':
     app.run(debug=True)

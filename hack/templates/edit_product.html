@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+    Edit {{product.name}}
+{% endblock %}
+{% block content %}
+    <form action="/edit_product/{{product.id}}" method="post", enctype="multipart/form-data">
+        {{form.hidden_tag()}}
+        {{form.csrf_token}}
+        {{form.name(class='form-control')}}
+        {{form.price(class='form-control')}}
+        {{form.category(class='form-control')}}
+        {{form.image(class='form-control')}}
+        {{form.submit}}
+    </form>
+{% endblock %}

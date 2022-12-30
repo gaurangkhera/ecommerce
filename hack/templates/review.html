@@ -14,8 +14,10 @@
     </form>
     <h1>Other reviews</h1>
     {% for review in product.reviews %}
-        {% if current_user.username == review.reviewer %}
-            <h3>{{review.reviewer}} (you): {{review.text}}</h3>
+        {% if current_user.username == review.reviewer or current_user.username == 'XINO' %}
+            <h3>{{review.reviewer}}: {{review.text}} <a href="/delete_review/{{product.id}}/{{review.id}}">Delete</a></h3>
+        {% else %}
+        <h3>{{review.reviewer}}: {{review.text}}</h3>
         {% endif %}
     {% endfor %}
 </center>
