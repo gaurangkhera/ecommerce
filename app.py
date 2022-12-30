@@ -111,6 +111,20 @@ def cart():
         total += entry.price
     return render_template('cart.html', total=total)
     
+@app.route('/buycart')
+@login_required
+def buy_cart():
+        total = 0
+        for entry in current_user.products:
+            total += entry.price
+        if current_user.credits > 0:
+            current_user.credits -= total
+            current_user.products = []
+            db.session.add(current_user)
+            db.session.commit()
+        return redirect(url_for('thank_you'))
+        
+
 @app.route('/get_credits', methods=['GET', 'POST'])
 @login_required
 def get_credits():
@@ -150,10 +164,15 @@ def review_product(id):
     form = ReviewForm()
     product = Product.query.filter_by(id=id).first()
     if form.validate_on_submit():
-        new_review = Review(text=form.review.data, product_id=product.id)
+        new_review = Review(text=form.review.data, product_id=product.id, reviewer=current_user.username)
         db.session.add(new_review)
         db.session.commit()
     return render_template('review.html', form=form, product=product)
+
+@app.route('/thankyou')
+@login_required
+def thank_you():
+    return render_template('thankyou.html')
         
 if __name__ == '__main__':
     app.run(debug=True)

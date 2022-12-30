@@ -15,6 +15,7 @@ class User(db.Model,UserMixin):
     password = db.Column(db.String)
     credits = db.Column(db.Integer, default=1000)
     products = db.relationship('Product', backref='user')
+    reviews = db.relationship('Review')
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,3 +30,4 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String, nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    reviewer = db.Column(db.Integer, db.ForeignKey('user.username'))

@@ -14,7 +14,9 @@
     </form>
     <h1>Other reviews</h1>
     {% for review in product.reviews %}
-        <h3>{{review.text}}</h3>
+        {% if current_user.username == review.reviewer %}
+            <h3>{{review.reviewer}} (you): {{review.text}}</h3>
+        {% endif %}
     {% endfor %}
 </center>
 {% endblock %}
