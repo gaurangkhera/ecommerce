@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import uuid as uuid
 import os
 
+app.config['UPLOAD_FOLDER'] = 'hack/static/'
 create_db(app)
 
 
