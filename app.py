@@ -1,4 +1,4 @@
-from hack import app, create_db, db, UPLOAD_FOLDER
+from hack import app, create_db, db
 from flask import render_template, redirect, abort, url_for, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from hack.forms import LoginForm, RegForm, CreditForm, ProfileForm, ReviewForm, EditProductForm
