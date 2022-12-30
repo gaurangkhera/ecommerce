@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
+{% block title %}
+    Register
+{% endblock %}
 {% block content %}
 <center>
-<form action="/reg" method="post" class="container-fluid mt-2 ">
+<form action="/reg" method="post" class="container-fluid mt-2 " enctype="multipart/form-data">
     {{form.hidden_tag()}}
     {{form.csrf_token}}
     {{form.email(class='form-control', placeholder='email')}}<br>

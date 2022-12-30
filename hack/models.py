@@ -9,10 +9,11 @@ def load_user(user_id):
 
 class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key = True)
+    image = db.Column(db.String, default='default.png')
     username = db.Column(db.String, nullable=False)
     email = db.Column(db.String(64),index=True)
     password = db.Column(db.String)
-    credits = db.Column(db.Integer, default=999999)
+    credits = db.Column(db.Integer, default=1000)
     products = db.relationship('Product', backref='user')
 
 class Product(db.Model):
@@ -22,3 +23,9 @@ class Product(db.Model):
     name = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    reviews = db.relationship('Review', backref='product')
+
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String, nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))

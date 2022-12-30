@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+    Reviewing {{product.name}}
+{% endblock %}
+{% block content %}
+    <center><h1>
+        You are reviewing {{product.name}}
+    </h1>
+    <form action="/review/{{product.id}}" method="post" class="container-fluid mt-2">
+        {{form.hidden_tag()}}
+        {{form.csrf_token}}
+        {{form.review(class='form-control')}}
+        {{form.submit(class='btn btn-primary')}}
+    </form>
+</center>
+{% endblock %}

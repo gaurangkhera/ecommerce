@@ -20,15 +20,12 @@
     <header class="p-3 text-light bg-dark">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-          </a>
-  
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-            <li><a href="/cart" class="nav-link px-2 text-secondary">Cart</a></li>
-            {% if current_user.is_authenticated %}
             
+            {% if current_user.is_authenticated %}
+            <li><a href="/cart" class="nav-link px-2 text-secondary">Cart</a></li>
+            <li><a href="/get_credits" class="nav-link px-2 text-secondary">Get more credits</a></li>
             {% endif %}
           </ul>
           <div class="text-end">
@@ -36,6 +33,7 @@
             <a class="nav-link px-2 text-secondary me-2">Your balance: ${{current_user.credits}}</a>
             <a href="/logout">
               <button type="button" class="btn btn-outline-light me-2">Logout</button></a>
+              <a href="/profile"><img height="50" width='50' class='rounded-circle' src='/static/users/{{current_user.image}}'></a>
             {% else %}
             <a href="/login">
               <button type="button" class="btn btn-outline-light me-2">Login</button></a>

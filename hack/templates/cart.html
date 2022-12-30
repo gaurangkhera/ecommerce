@@ -3,7 +3,7 @@
     Cart
 {% endblock %}
 {% block content %}
-<section class="h-100" style="background-color: #eee;">
+<section class="h-100">
     <div class="container h-100 py-5">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-10">
@@ -16,7 +16,9 @@
             </div> -->
           </div>
           {% if current_user.products|length == 0 %}
-            <h1>It's lonely in here :(</h1>
+          <center>
+            <h1>There are no products in your cart.</h1>
+          </center>
             {% else %}
             {% for prod in current_user.products %}
             <div class="card rounded-3 mb-4">
@@ -58,11 +60,11 @@
               {% endfor %}
               <div class="card">
                 <div class="card-body">
-                  <button type="button" class="btn btn-primary btn-block">Proceed to Pay</button>
+                  <button type="button" class="btn btn-primary btn-block">Proceed to Pay ${{total}}</button>
                 </div>
               </div>
           {% endif %}
-       
+              
             
         
           

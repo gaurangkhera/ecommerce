@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+    Get more credits
+{% endblock %}
+{% block content %}
+<center><h1>Get more credits</h1>
+Enter the amount of credits you want below</center>
+    <form action="/get_credits" method="post" class="mt-2 container-fluid">
+        {{form.hidden_tag()}}
+        {{form.csrf_token}}
+        {{form.credits(class='form-control', placeholder='amount')}}
+        {{form.submit(class='form-control btn btn-primary mt-2')}}
+        {{mess}}
+    </form>
+{% endblock %}
