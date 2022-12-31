@@ -16,6 +16,16 @@ class User(db.Model,UserMixin):
     credits = db.Column(db.Integer, default=1000)
     products = db.relationship('Product', backref='user')
     reviews = db.relationship('Review')
+    orders = db.relationship('Order')
+
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    image= db.Column(db.String)
+    name = db.Column(db.String)
+    price = db.Column(db.Integer)
+    qty = db.Column(db.Integer)
+    products = db.relationship('Product')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +36,8 @@ class Product(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     reviews = db.relationship('Review', backref='product')
     qty  = db.Column(db.Integer, default=0)
+    order = db.Column(db.Integer, db.ForeignKey('order.id'))
+
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)

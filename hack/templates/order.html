@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+    Your orders
+{% endblock %}
+{% block content %}
+{% for order in current_user.orders %}
+<div class="bg-white card  order-list shadow-sm">
+    <div class="gold-members p-4">
+        <a href="#">
+        </a>
+        <div class="media">
+                <img class="mr-4" src="/static/{{order.image}}" width="50" height="50">
+            <div class="media-body">
+                <h6 class="mb-2">
+                    <a href="#" class="text-black">{{order.name}}</a>   
+                </h6>
+                <p class="text-dark">Quantity: {{order.qty}}
+                </p>
+                <hr>
+                <p class="mb-0 text-black text-primary pt-2"><span class="text-black font-weight-bold"> Total Paid:</span> ${{order.price * order.qty}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

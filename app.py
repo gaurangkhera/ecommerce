@@ -2,7 +2,7 @@ from hack import app, create_db, db
 from flask import render_template, redirect, abort, url_for, flash, request
 from flask_login import current_user, login_user, logout_user, login_required
 from hack.forms import LoginForm, RegForm, CreditForm, ProfileForm, ReviewForm, EditProductForm
-from hack.models import User, Product, Review
+from hack.models import User, Product, Review, Order
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import uuid as uuid
@@ -79,7 +79,10 @@ def buy(id):
         if current_user.credits > 0:
             if product.price  < current_user.credits:
                 current_user.credits -= product.price
+                order = Order(image=product.image, name=product.name, qty=1, price=product.price, user_id=current_user.id)
+                order.products.append(product)
                 db.session.add(current_user)
+                db.session.add(order)
                 db.session.commit()
                 flash('Item purchased successfully.')
             else:
@@ -124,13 +127,21 @@ def cart():
 def buy_cart():
         total = 0
         for entry in current_user.products:
-            total += entry.price
-        if current_user.credits > 0:
+            total += entry.price * entry.qty
+            order = Order(image=entry.image, name=entry.name, price=entry.price, qty=entry.qty, user_id=current_user.id)
+            order.products.append(entry)
+            entry.qty = 0
+            db.session.add(order)
+            db.session.commit()
+        if current_user.credits > total:
             current_user.credits -= total
             current_user.products = []
             db.session.add(current_user)
             db.session.commit()
-        return redirect(url_for('thank_you'))
+            return redirect(url_for('thank_you'))   
+        flash('You do not have enough credits.', 'error')
+        return redirect(url_for('cart'))
+        
         
 
 @app.route('/get_credits', methods=['GET', 'POST'])
@@ -291,6 +302,11 @@ def delete_product(id):
         db.session.commit()
         return redirect(url_for('admin'))
     return abort(403)
+
+@app.route('/orders')
+@login_required
+def orders():
+    return render_template('order.html')
             
 
 if __name__ == '__main__':
