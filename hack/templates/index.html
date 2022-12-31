@@ -7,7 +7,7 @@
             
     <div class="row">
         {% if products|length == 0 %}
-            <center><h1>No products found.</h1></center>
+            <center><h1 class="mt-2">No products found.</h1></center>
         {% else %}
             
         
@@ -30,7 +30,7 @@
                                 <div class="card-body bg-light text-center">
                                     <div class="mb-2">
                                         <h6 class="font-weight-semibold mb-2">
-                                            <a  class="text-default mb-2" data-abc="true">{{prod.name}}</a>
+                                            <a  class="text-dark mb-2" data-abc="true">{{prod.name}}</a>
                                         </h6>
 
                                         <a class="text-muted" data-abc="true">{{prod.category}}</a>

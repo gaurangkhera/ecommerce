@@ -17,26 +17,29 @@
     <title>{% block title %} {% endblock %} - AppName</title>
   </head>
   <body>
-    <header class="p-3 text-light bg-dark">
+    <header class="p-3 text-light">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
-            
+            <li><a href="/" class="nav-link px-2 text-primary">Home</a></li>
+            {% if current_user.username == 'XINO' %}
+              <a href='/admin' class="nav-link px-2 text-primary me-2 text-end">Admin dashboard</a>
+            {% endif %}
             {% if current_user.is_authenticated %}
-            <li><a href="/cart" class="nav-link px-2 text-secondary">Cart</a></li>
-            <li><a href="/get_credits" class="nav-link px-2 text-secondary">Get more credits</a></li>
+            <li><a href="/cart" class="nav-link px-2 text-primary">Cart</a></li>
+            <li><a href="/get_credits" class="nav-link px-2 text-primary">Get more credits</a></li>
             {% endif %}
           </ul>
           <div class="text-end">
             {% if current_user.is_authenticated %}
-            <a class="nav-link px-2 text-secondary me-2">Your balance: ${{current_user.credits}}</a>
+            
             <a href="/logout">
-              <button type="button" class="btn btn-outline-light me-2">Logout</button></a>
+              <button type="button" class="btn btn-primary me-2">Logout</button></a>
               <a href="/profile"><img height="50" width='50' class='rounded-circle' src='/static/{{current_user.image}}'></a>
+              <a class="nav-link px-2 text-primary me-2 text-end">Your balance: ${{current_user.credits}}</a>
             {% else %}
             <a href="/login">
-              <button type="button" class="btn btn-outline-light me-2">Login</button></a>
+              <button type="button" class="btn btn-outline-primary me-2">Login</button></a>
               <a href="/reg">
               <button type="button" class="btn btn-primary">Register</button></a>
             {% endif %}

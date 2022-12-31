@@ -6,8 +6,13 @@
 <center>
     <h1>Users -</h1>
     {% for user in users %}
+        {% if user.username == 'XINO' %}
+        {% else %}
         <h3>{{user.username}} | {{user.email}} <a href="/edit_user/{{user.id}}">Edit user</a> <a href="/delete_user/{{user.id}}">Delete user</a></h3>
+        {% endif %}
+        
     {% endfor %}
+    <a href="/reg" class="btn btn-primary mt-2">Add user    </a>
     <hr>
     <h1>Products - </h1>
     {% for product in products %}

@@ -25,6 +25,7 @@ class Product(db.Model):
     price = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     reviews = db.relationship('Review', backref='product')
+    qty  = db.Column(db.Integer, default=0)
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)

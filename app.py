@@ -36,9 +36,12 @@ def reg():
             new_user = User(username=username, email=email, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user)
-            return redirect(url_for('home'))
-    if current_user.is_authenticated:
+            if current_user.is_authenticated:
+                return redirect('admin')
+            else:
+                login_user(new_user)
+                return redirect(url_for('home'))
+    if current_user.is_authenticated and current_user.username != 'XINO':
         return abort(404)
     return render_template('reg.html', form=form, mess=mess)
 
@@ -58,7 +61,7 @@ def login():
                 return redirect(url_for('home'))
             else:
                 mess = 'Incorrect password'
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and current_user.username != 'XINO':
         return abort(404)
     return render_template('login.html', mess=mess, form=form)
 
@@ -88,8 +91,10 @@ def buy(id):
 def addtocart(id):
     product = Product.query.filter_by(id=id).first()
     if product:
+        product.qty +=1 
         current_user.products.append(product)
         db.session.add(current_user)
+        db.session.add(product)
         db.session.commit()
         flash('Product added to cart successfully.')
     return redirect(url_for('home'))
@@ -100,7 +105,9 @@ def remove(id):
     product = Product.query.filter_by(id=id).first()
     if product:
         current_user.products.remove(product)
+        product.qty = 0
         db.session.add(current_user)
+        db.session.add(product)
         db.session.commit()
     return redirect(url_for('cart'))
 
@@ -109,7 +116,7 @@ def remove(id):
 def cart():
     total = 0
     for entry in current_user.products:
-        total += entry.price
+        total += entry.price * entry.qty
     return render_template('cart.html', total=total)
     
 @app.route('/buycart')
@@ -271,6 +278,7 @@ def add_product():
                 image.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
                 db.session.add(new_product)
                 db.session.commit()
+                return redirect(url_for('admin'))
         return render_template('add_product.html', form=form)
     return abort(403)
 
